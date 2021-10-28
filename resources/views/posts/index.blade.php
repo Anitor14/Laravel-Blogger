@@ -35,6 +35,7 @@
                 <p>There are no posts</p>
             @endif
 
+            {{ $posts->links() }}
 
         </div>
     </div>
