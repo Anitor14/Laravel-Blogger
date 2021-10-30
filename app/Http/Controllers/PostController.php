@@ -9,7 +9,7 @@ use App\Models\Post;
 class PostController extends Controller
 {
     public function index(){
-        $posts = Post::paginate(4);
+        $posts = Post::latest()->with(['user', 'likes'])->paginate(4);
        return view('posts.index',[
            'posts' => $posts,
        ]);
@@ -23,6 +23,13 @@ class PostController extends Controller
         $request->user()->posts()->create([
             'body'=>$request->body,
         ]);
+
+        return back();
+    }
+
+    public function demolish(Post $post){
+        $post->delete();
+        // dd($post);
 
         return back();
     }

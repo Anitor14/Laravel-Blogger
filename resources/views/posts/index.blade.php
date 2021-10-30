@@ -29,22 +29,31 @@
                     <div class="mb-4">
                         <a href="" class="font-bold">{{ $post->user->name }}</a> <span class="text-gray-600 text-sm">{{ $post->created_at->diffForHumans() }}</span>
                         <p class="mb-2">{{ $post->body }}</p>
-
-                        
-
+                        <div>
+                            <form action="{{ route('posts.delete', $post) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-blue-500">DELETE</button>
+                            </form>
+                        </div>
+                
                         <div class="flex items-center">
-                            @if(!$post->likedBy(auth()->user()))
+                            @auth
+                                @if(!$post->likedBy(auth()->user()))
                                 <form action="{{ route('posts.likes', $post) }}" method="post" class="mr-1">
                                     @csrf
                                     <button type="submit" class="text-blue-500">Like</button>
                                 </form>
-                            @else    
+                             @else    
                                 <form action="{{ route('posts.likes', $post) }}" method="post" class="mr-1">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-blue-500">Unlike</button>
                                 </form>
-                            @endif
+                             @endif
+         
+                            @endauth
+                         
 
                              <span class="relative bottom-2">{{ $post->likes()->count()}} {{ Str::plural('like', 5) }}</span>
                         </div>
